@@ -1,0 +1,7 @@
+[tools]
+kubectl = "1.36.5"
+terraform = "1.17.2"
+
+[env]
+# Project-local kubeconfig for the disposable test cluster; never committed.
+KUBECONFIG = "{{config_root}}/.kube/config"
