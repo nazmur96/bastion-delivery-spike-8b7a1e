@@ -6,4 +6,4 @@ resources:
 images:
   - name: app
     newName: ghcr.io/nazmur96/bastion-delivery-spike-8b7a1e
-    digest: sha256:e94cb8727beb8ace1214219aead4b53300a2ee476fd3ad1e38cd98e7433850a4
+    digest: sha256:fa02ff157ed29aeb312c4dd3e66e1fcfd005d2eccd53ceb9ccc4c9ed6490ff42
