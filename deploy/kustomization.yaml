@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - deployment.yaml
+  - service.yaml
 images:
   - name: app
     newName: ghcr.io/nazmur96/bastion-delivery-spike-8b7a1e
