@@ -42,9 +42,13 @@ Limits: rollback does not undo data or schema changes or external side effects.
 
 ## Correction
 
-_The source change that fixes the cause, and the revision that carries it._
+Revision 11bc8af renames the directive to `gzip_types`. Promoted after CI run 43970956348 passed.
+
+Follow-up: add a check that runs `nginx -t` on the image so CI catches this class of error.
 
 ## Verification
 
 Journey check: GET spike-app:8080/ through the cluster API, expecting "version:".
 - 2026-11-16T22:30:42.911Z check failed · revision unknown · Response does not contain "version: 5"
+- 2026-11-16T22:31:43Z drill passed · rollback to c2ffaa1 · Response contains "version: 2"
+- 2026-11-16T22:33:34Z check passed · revision 11bc8af · Response contains "version: 6"
