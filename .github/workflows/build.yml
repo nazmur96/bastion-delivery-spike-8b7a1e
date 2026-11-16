@@ -1,0 +1,39 @@
+name: build
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['deploy/**']
+permissions:
+  contents: read
+  packages: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./checks/run.sh
+  image:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+      - run: echo "IMAGE_DIGEST=${{ steps.push.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"
+      - run: printf '{"revision":"%s","digest":"%s"}\n' "${{ github.sha }}" "${{ steps.push.outputs.digest }}" > image.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-digest
+          path: image.json

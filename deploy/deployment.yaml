@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spike-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: spike-app }
+  template:
+    metadata:
+      labels: { app: spike-app }
+    spec:
+      containers:
+        - name: web
+          image: app
+          ports: [{ containerPort: 8080 }]
+          readinessProbe:
+            httpGet: { path: /, port: 8080 }
